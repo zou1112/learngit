@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>新增版本</title>
+  <link rel="stylesheet" href="../layui/css/layui.css" media="all">
+</head>
+<body>
+    <fieldset class="layui-elem-field">
+        <legend>历史版本信息</legend>
+        <div class="layui-field-box">    
+            <table id="demo" lay-filter="test"></table>
+        </div>
+       新增版本信息
+        <hr>
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+              <label class="layui-form-label">版本号:</label>
+              <div class="layui-input-block">
+                <input type="text" name="versionNo" required  lay-verify="required" placeholder="求输入版本号" autocomplete="off" class="layui-input">
+                <input type="hidden" name="versionId">
+              </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">版本大小:</label>
+                <div class="layui-input-block">
+                  <input type="text" name="versionSize" required  lay-verify="required" placeholder="请输入版本大小,单位为MB" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">发布状态:</label>
+                <div class="layui-input-block">
+                  <input type="text" name="title" value="预发布" disabled="disabled" autocomplete="off" class="layui-input">
+                </div>
+              </div>                    
+            <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">版本简介:</label>
+              <div class="layui-input-block">
+                <textarea name="versionInfo" placeholder="请输入本版本相关信息,本信息作为该版本的详细信息进行版本介绍" class="layui-textarea"></textarea>
+              </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text" id="logo">
+                <label class="layui-form-label">apk文件</label>
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn" id="test1">
+                        <i class="layui-icon">&#xe67c;</i>上传文件
+                      </button>
+                </div>
+            </div>
+            <div class="layui-form-item" id="apkName">
+              <label class="layui-form-label">apk文件:</label>
+              <div class="layui-input-block">
+                <input type="text" name="apk"disabled="disabled" autocomplete="off" class="layui-input">
+                <button type="button" class="layui-btn layui-btn-danger" id="del">删除</button>   
+              </div>
+            </div>      
+
+              <input type="hidden" name="publishStatus" value="3" />
+              <input type="hidden" name="appId"/>
+              <input type="hidden" name="versionId"/>
+              <input type="hidden" name="apkLocPath"/>
+              <input type="hidden" name="apkFileName"/>
+            <div class="layui-form-item">
+              <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary" id="back">返回</button>
+              </div>
+            </div>
+          </form>
+      </fieldset>
+
+ <script src="../js/connection.js"></script>
+<script src="../layui/layui.js"></script>
+<script>
+layui.use(['table','form','upload'], function(){
+  var table = layui.table,
+      form =layui.form,
+        $=layui.$,
+        upload=layui.upload; 
+
+
+        if($("input[name='apk']").val()!=null && $("input[name='apk']").val()!=""){
+                $("#logo").hide();
+            }else{
+              $("#logo").show();
+              $("#apkName").hide();
+            }
+
+            $("#del").click(function(){
+              $.ajax({
+                  url:appServiceUrl+'/version/deleteapk',
+                  data:{apkName:$("input[name='apk']").val()},
+                  dataType:"json",
+                   success:function(res){
+                  if(res.success==true){  
+                    $("#apkName").hide();
+                    $("#logo").show();
+                  }else{
+                    layer.msg("删除失败");
+                  }
+              },
+              error:function(){
+                layer.msg("请求失败");
+              }
+          })
+     });
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            ,height: 212
+            ,url: appServiceUrl+'/version/queryAppVersionList?id='+$("input[name='appId']").val()
+            ,cols: [[ //表头
+            {field: 'appName', title: '软件名称', width:180,fixed: 'left'}
+            ,{field: 'versionNo', title: '版本号', width:180}
+            ,{field: 'versionSize', title: '版本大小(单位:M)', width:180}
+            ,{field: 'publishStatusName', title: '发布状态', width:180} 
+            ,{field: 'apkFileName', title: 'APK文件下载', width: 280}
+            ,{field: 'modifyDate', title: '最近更新时间', width: 180}
+            ]]
+        });
+  
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            $.ajax({
+                url:appServiceUrl+'/version/addVerSion',
+                data:data.field,
+                dataType:"json",
+                success:function(data){
+                    if(data.success==true){
+                        layer.msg("ok");
+                        window.parent.location.reload();//刷新父页面
+                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                         parent.layer.close(index);
+                    }
+                    
+                },
+                error:function(){
+                    layer.msg("X");
+                }
+            });
+            return false;
+        });
+          //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: appServiceUrl+'/version/upload' //上传接口
+            ,exts:"apk"
+            ,done: function(res){
+            //上传完毕回调
+                if(res.success==true){
+                    for(var i=0;i<2;i++){
+                        if(i==0){
+                            $("input[name='apkLocPath']").val(res.data[0]);
+                        }else if(i==1){
+                            $("input[name='apkFileName']").val(res.data[1]);
+                        }
+                    }
+                }  
+            }
+            ,error: function(){
+                //请求异常回调
+             layer.msg("请求异常");
+            }
+        });
+        $("#back").click(function(){
+            window.parent.location.reload();//刷新父页面
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);
+        })
+});
+</script>
+</body>
+</html>

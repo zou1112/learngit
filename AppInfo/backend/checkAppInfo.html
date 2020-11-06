@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>查看App基础信息</title>
+  <link rel="stylesheet" href="../layui/css/layui.css">
+
+</head>
+<body>
+    <form class="layui-form" action="" method="POST">
+        <div class="layui-form-item">
+          <label class="layui-form-label">软件名称:</label>
+          <div class="layui-input-block">
+            <input type="text" name="softwareName" id="name"  disabled="disabled" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">APK名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="APKName"  disabled="disabled"  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">            </div>
+          </div>
+          <br>
+          <div class="layui-form-item">
+            <label class="layui-form-label">支持ROM:</label>
+            <div class="layui-input-block">
+              <input type="text" name="supportROM" disabled="disabled"   lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label">界面语言：</label>
+              <div class="layui-input-block">
+                  <input type="text" name="interfaceLanguage"  disabled="disabled"  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">            </div>
+            </div>
+            <br>
+            <div class="layui-form-item">
+                <label class="layui-form-label">软件大小:</label>
+                <div class="layui-input-block">
+                  <input type="text" name="softwareSize" disabled="disabled"   lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                  <label class="layui-form-label">下载次数：</label>
+                  <div class="layui-input-block">
+                      <input type="text" name="downloads" disabled="disabled"   lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">            </div>
+                </div>
+                <br>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属平台:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="flatformName" value="待审核" disabled="disabled"   readonly  placeholder="请输入标题" autocomplete="off" class="layui-input">            </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">所属分类:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="category" value="待审核"  disabled="disabled"   readonly  placeholder="请输入标题" autocomplete="off" class="layui-input">            </div>
+                  </div>
+           
+              <div class="layui-form-item">
+                <label class="layui-form-label">APP状态:</label>
+                <div class="layui-input-block">
+                    <input type="text" name="statusName" disabled="disabled"  readonly  placeholder="请输入标题" autocomplete="off" class="layui-input">            </div>
+              </div>
+              <br>
+        <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">应用简介:</label>
+          <div class="layui-input-block">
+            <textarea name="appInfo" placeholder="请输入内容" disabled="disabled" class="layui-textarea"></textarea>
+          </div>
+        </div>
+        <input type="hidden" name="appId"/>
+        <div class="layui-form-item" id="logoImg">
+          <label class="layui-form-label">LOGO图片:</label>          
+          <img src="" id="img" width="100px;" height="100px"/> 
+        </div>     
+         <div class="layui-form-item">
+                  <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="yes">审核通过</button>
+                    <button class="layui-btn" lay-submit lay-filter="no">审核不通过</button>
+                    <button class="layui-btn layui-btn-primary" id="back">返回</button>
+                  </div>
+                </div>
+            </form>          
+        <fieldset class="layui-elem-field">
+            <legend>历史版本信息</legend>
+                <div class="layui-form-item">
+                  <label class="layui-form-label">版本号:</label>
+                  <div class="layui-input-block">
+                    <input type="text" name="versionNo" required  lay-verify="required" disabled="disabled" placeholder="求输入版本号" autocomplete="off" class="layui-input">
+                    <input type="hidden" name="versionId">
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">版本大小:</label>
+                    <div class="layui-input-block">
+                      <input type="text" name="versionSize" disabled="disabled" required  lay-verify="required" placeholder="请输入版本大小,单位为MB" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">发布状态:</label>
+                    <div class="layui-input-block">
+                      <input type="text" name="title" value="预发布" disabled="disabled" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>                    
+                <div class="layui-form-item layui-form-text">
+                  <label class="layui-form-label">版本简介:</label>
+                  <div class="layui-input-block">
+                    <textarea name="versionInfo" disabled="disabled" placeholder="请输入本版本相关信息,本信息作为该版本的详细信息进行版本介绍" class="layui-textarea"></textarea>
+                  </div>
+                </div>
+                <div class="layui-form-item" id="apkName">
+                  <label class="layui-form-label">apk文件:</label>
+                  <div class="layui-input-block">
+                    <input type="text" name="apk"disabled="disabled" autocomplete="off" class="layui-input">
+                  </div>
+                </div>      
+                  <input type="hidden" name="appId"/>
+          </fieldset>
+      <script src="../layui/layui.js"></script>
+      <script src="../js/connection.js"></script>
+     <script>
+     //Demo
+     layui.use(['form','upload','table'], function(){
+       var form = layui.form,
+           table=layui.table,
+           $=layui.$;
+           //第一个实例
+
+        $("#back").click(function(){
+            window.parent.location.reload();//刷新父页面
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);
+        })
+        form.on('submit(yes)', function(data){        
+           $.ajax({
+              url:appServiceUrl+"/backend/modifyStatus",
+              data:{id:$("input[name='appId']").val(),status:2},
+              dataType:"json",
+              success:function(data){
+                  if(data.success==true){
+                      layer.msg("ok");
+                      window.parent.location.reload();//刷新父页面
+                       var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                      parent.layer.close(index);
+                  }
+              }
+           });
+          return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+    form.on('submit(no)', function(data){
+      $.ajax({
+              url:appServiceUrl+"/backend/modifyStatus",
+              data:{id:$("input[name='appId']").val(),status:3},
+              dataType:"json",
+              success:function(data){
+                  if(data.success==true){
+                      layer.msg("ok");
+                      window.parent.location.reload();//刷新父页面
+                      var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                       parent.layer.close(index);
+                  }
+              }
+           });
+          return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+ }
+);
+    </script>
+</body>
+</html>

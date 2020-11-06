@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>后台 </title>
+  <link rel="stylesheet" href="../layui/css/layui.css">
+  <style>
+      .layui-input-inline{
+            margin-top: 20;
+      }
+  </style>
+</head>
+<body>
+    <form class="layui-form" action="" method="POST">
+        <div class="layui-form-item">
+          <label class="layui-form-label">软件名称:</label>
+          <div class="layui-input-block">
+            <input type="text" name="softwareName" id="name"  required   lay-verify="required" placeholder="请输入软件名称" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">APK名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="APKName"  required  lay-verify="required" placeholder="请输入APK名称" autocomplete="off" class="layui-input">            </div>
+          </div>
+          <br>
+          <div class="layui-form-item">
+            <label class="layui-form-label">支持ROM:</label>
+            <div class="layui-input-block">
+              <input type="text" name="supportROM"  required  lay-verify="required" placeholder="请输入ROM" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+              <label class="layui-form-label">界面语言：</label>
+              <div class="layui-input-block">
+                  <input type="text" name="interfaceLanguage"  required  lay-verify="required" placeholder="请输入界面语言" autocomplete="off" class="layui-input">            </div>
+            </div>
+            <br>
+            <div class="layui-form-item">
+                <label class="layui-form-label">软件大小:</label>
+                <div class="layui-input-block">
+                  <input type="text" name="softwareSize"  required   lay-verify="required" placeholder="请输入软件大小" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                  <label class="layui-form-label">下载次数：</label>
+                  <div class="layui-input-block">
+                      <input type="text" name="downloads"  required  lay-verify="required" placeholder="请输入下载次数" autocomplete="off" class="layui-input">            </div>
+                </div>
+                <br>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属平台</label>
+                <div class="layui-input-block">
+                  <select name="flatformId">
+                  </select>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">一级分类</label>
+                <div class="layui-input-block">
+                  <select name="categoryLevel1" lay-filter="categoryLevel1" required lay-verify="required" placeholder="请输入标题"> </select>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">二级分类</label>
+                <div class="layui-input-block">
+                  <select name="categoryLevel2" lay-filter="categoryLevel2"></select>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">三级分类</label>
+                <div class="layui-input-block">
+                  <select name="categoryLevel3" lay-filter="categoryLevel3"></select>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">APP状态:</label>
+                <div class="layui-input-block">
+                    <input type="text" name="statusName" value="待审核"    readonly  placeholder="请输入标题" autocomplete="off" class="layui-input">            </div>
+              </div>
+              <br>
+        <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">应用简介:</label>
+          <div class="layui-input-block">
+            <textarea name="appInfo" placeholder="请输入内容" class="layui-textarea"></textarea>
+          </div>
+        </div>
+        <input type="hidden" name="status" value="1" id="status">
+        <input type="hidden" name="select1" value="1">
+        <input type="hidden" name="logoPicPath" id="logoPicPath">
+        <input type="hidden" name="id" id="id">
+        <input type="hidden" name="logoLocPath" id="logoLocPath">
+        <div class="layui-form-item" id="logo">
+          <label class="layui-form-label">LOGO图片:</label>          
+          <button type="button" class="layui-btn" id="test1">
+           <i class="layui-icon">&#xe67c;</i>上传图片
+          </button>         
+        </div>
+        <div class="layui-form-item" id="logoImg">
+          <label class="layui-form-label">LOGO图片:</label>          
+          <img src="" id="img" width="100px;" height="100px"/> 
+          <button type="button" class="layui-btn layui-btn-danger" id="del">删除</button>   
+        </div>
+       
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo" id="submit">保存并再次提交</button>
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+          </div>
+        </div>
+      </form>
+       <script src="../layui/layui.js"></script>
+       <script src="../js/connection.js"></script>
+      <script>
+      //Demo
+      layui.use(['form','upload'], function(){
+        var form = layui.form,
+            upload=layui.upload,
+              $=layui.$;
+            Status("APP_FLATFORM","flatformId");//所属平台
+            categoryLevel1("null","categoryLevel1")
+
+            if($("#img").attr("src")!=null && $("#img").attr("src")!=""){
+                $("#logo").hide();
+            }else{
+              $("#logo").show();
+              $("#logoImg").hide();
+            }
+            if($("input[name='status']").val()==3){
+                $("#submit").show();
+            }else{
+              $("#submit").hide();
+            }
+            $("#del").click(function(){
+                alert($("input[name='logoLocPath']").val())
+              $.ajax({
+                  url:appServiceUrl+'/appinfo/deleteLogo',
+                  data:{logoName:$("input[name='logoLocPath']").val()},
+                  dataType:"json",
+                   success:function(res){
+                  if(res.success==true){  
+                    $("#logoImg").hide();
+                    $("#logo").show();
+                  }else{
+                    layer.msg("删除失败");
+                  }
+              },
+              error:function(){
+                layer.msg("请求失败");
+              }
+          })
+     });
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+          $.ajax({
+              url:appServiceUrl+'/appinfo/addAppInfo',
+              data:data.field,
+              dataType:"json",
+              success:function(res){
+                  if(res.success==true){  
+                    layer.msg("添加成功")
+                    window.parent.location.reload();//刷新父页面
+                     var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);
+                  }else{
+                    layer.msg("添加失败")
+                  }
+              },
+              error:function(){
+                layer.msg("请求失败");
+              }
+          })
+          return false;
+        });
+
+       //执行实例
+        var uploadInst = upload.render({
+          elem: '#test1' //绑定元素
+          ,url: appServiceUrl+'/appinfo/add' //上传接口
+          ,done: function(res){
+              //上传完毕回调
+            if(res.success==true){             
+                $("input[name='logoPicPath']").val(res.path);
+                $("input[name='logoLocPath']").val(res.imgName);
+            }else{
+                layer.msg("上传失败");
+            }
+          }
+          ,error: function(){
+            layer.alert("请求错误");
+          }
+        });
+
+        //app状态
+       function Status(status,name){
+            $.getJSON(appServiceUrl+"/dictionary/dataList?status="+status,function(data){
+                  if(data.success==true){
+                        // $("select[name='"+name+"']").html("<option value=''>-请选择-</option>");
+                      data.data.forEach(function(date) {
+                        var option="<option value="+date.valueId+">"+date.valueName+"</option>";
+                          $("select[name='"+name+"']").append(option);
+                      })
+                         form.render("select");
+                  }            
+            });
+        }
+
+    //一级分类
+        function categoryLevel1(parentId,name){
+            $.getJSON(appServiceUrl+"/cate/category?parentId="+parentId,function(data){
+                  if(data.success==true){
+                    var option=""
+                      data.data.forEach(function(date) {
+                       if($("select[name="+name+"]").children("option").length>0){
+                        $("select[name="+name+"]").children("option").each(function(){
+                            if($(this).val()!=date.id){                           
+                               option="<option value="+date.id+">"+date.categoryName+"</option>";
+                            }
+                        })       
+                       }else{
+                        option="<option value="+date.id+">"+date.categoryName+"</option>";
+                       };
+                                                         
+                          $("select[name='"+name+"']").append(option);
+                      })
+                        form.render("select");
+                  }            
+            });
+        }
+
+
+         //监听一级分类
+         form.on('select(categoryLevel1)', function(data){
+          $("select[name='categoryLevel2']").html("<option value=''>-请选择-</option>");
+          $("select[name='categoryLevel3']").html("<option value=''>-请选择-</option>");
+          if(data.value!=null && data.value!=""){
+            categoryLevel1(data.value,"categoryLevel2")
+          }
+          form.render("select");
+          
+      });  
+
+
+      form.on('select(categoryLevel2)', function(data){
+        $("select[name='categoryLevel3']").html("<option value=''>-请选择-</option>");
+        if(data.value!=null && data.value!=""){
+            categoryLevel1(data.value,"categoryLevel3")
+          }
+          form.render("select");
+      });  
+   });
+       
+      </script>
+</body>
+</html>

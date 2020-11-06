@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+<title>后台登录页面</title>
+<link rel="stylesheet" type="text/css" href="../layui/css/layui.css">
+</head>
+<body style="background-color: #c2c2c2">
+<div style="width: 1000px; ">
+<div style="margin-left: 500px; margin-top: 100;width: 500px;" >
+	<fieldset class="layui-elem-field layui-field-title">
+  <legend style="margin-left: 200px">后台管理系统</legend>
+  <div style="padding-top: 30px; margin-right :200px;">
+	<form class="layui-form" action="">
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<input type="text" name="userCode" required lay-verify="required"
+					placeholder="请输入您的账号" autocomplete="off" class="layui-input" style="width: 300px">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label"></label>
+			<div class="layui-input-inline">
+				<input type="password" name="pwd" required
+					lay-verify="required" placeholder="请输入密码" autocomplete="off"  style="width: 300px"
+					class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+ </div>	
+</fieldset>
+</div>
+</div>	
+<script src="../js/connection.js"></script>
+	<script src="../layui/layui.js"></script>
+	<script>
+		//Demo
+		layui.use('form', function() {
+			var form = layui.form,
+				$=layui.$;
+			//监听提交
+			form.on('submit(formDemo)', function(data) {
+				$.ajax({
+					url:appServiceUrl+"/admin/toLogin",
+					data:{userCode:data.field.userCode,
+						  pwd:data.field.pwd},
+					dataType:"json",
+					success:function(result){
+						if(result.success==true){
+                            layer.msg("登录成功");
+							sessionStorage.setItem("userCode",result.data.userName)
+							 window.location.href="index.html";
+						}else{
+							layer.msg(result.msg);							
+						}
+					},
+					error:function(){
+							layer.msg("请求失败");
+
+					}
+				});
+				return false;
+			});
+		});
+	</script>
+</body>
+</html>
